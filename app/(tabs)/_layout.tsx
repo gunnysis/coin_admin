@@ -1,45 +1,33 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
+import { CustomTabButton } from '@/components/CustomTabButton';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const tabItems = [
+    { name: 'index', href: '/', icon: 'home', label: '메인' },
+    { name: 'stock/index', href: '/stock', icon: 'cart', label: '재고 요청' },
+    { name: 'logout', href: '/logout', icon: 'log-out', label: '로그아웃' }
+  ];
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+    <Tabs>
+      <TabSlot />
+      <TabList className="absolute bottom-8 flex items-center justify-center border border-gray-500 w-full p-2">
+        {tabItems
+        .filter((item) => item.href !== null)
+        .map((item) =>
+          item.href ? (
+            <TabTrigger
+              key={item.name}
+              name={item.name}
+              href={item.href as "/stock" | "/trouble" | "/logout" | "/"}
+              asChild
+            >
+              <CustomTabButton icon={item.icon}>{item.label}</CustomTabButton>
+            </TabTrigger>
+          ) : null
+        )}
+      </TabList>
     </Tabs>
   );
 }
