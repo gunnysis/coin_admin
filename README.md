@@ -1,5 +1,5 @@
 # coin admin
-nodejs version: 18
-DB: firestore
-project environment: React Native Expo
-css: tailwind css
+nodejs version: v18.18.2 \n
+DB: firestore \n
+project environment: React Native Expo \n
+css: tailwind css \n
